@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { logout } from '../store/actions/user'
-import { View, ScrollView, Text, TextInput, BackHandler, StyleSheet, TouchableOpacity, Alert } from 'react-native'
+import { View, ScrollView, Text, TextInput, Dimensions, BackHandler, StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import Header from '../components/header'
 import styleComum from '../style'
 import axios from 'axios'
-
+import { cpfMask } from '../utils/maskcpf'
 export class StatusPedido extends Component {
     state = {
         numeroDocumento: this.props.numeroDocumento,
@@ -34,23 +34,59 @@ export class StatusPedido extends Component {
 
     componentDidMount = () => {
         BackHandler.addEventListener('hardwareBackPress', this.BackHandler);
+        const user = { numeroDocumento: this.state.numeroDocumento, senhaDefinitiva: this.state.senhaDefinitiva }
+        const config = {
+            headers: {
+                'x-access-token': `${this.state.token}`
+            }
+        };
+        axios.post('/api/v1/usuario/obterPorNumeroDocumento', user, config).then(resp => {
+            let state = { ...this.state }
+            const data = resp.data.todo
+            state['nome'] = data['nomeCompleto']
+            state['id'] = data['id']
+            this.setState({ ...state })
+        })
     }
 
 
     render() {
         return (
             <View style={styleComum.container}>
-                <Header />
-                <Text style={styleComum.subtitle}>CPF: {this.state.numeroDocumento}</Text>
-                <Text style={styleComum.subtitle}>Senha: {this.state.senhaDefinitiva}</Text>
-                <Text style={styleComum.subtitle}>Token: {this.state.token}</Text>
+                <Header title="Status" />
+                <View style={style.content}>
+                    <Text style={styleComum.subtitle}>{this.state.nome}</Text>
+                    <Text style={styleComum.subtitle}>{cpfMask(this.state.numeroDocumento)}</Text>
+                    <Text style={style.textStatus}>{this.state.status || 'Pedido em Análise'}</Text>
+                    <Text style={styleComum.subtitle}>Pedido feito em 12/07/2020</Text>
+                    <Text style={styleComum.subtitle}>17h 45</Text>
+                </View>
+                <TouchableOpacity style={[styleComum.btn, style.btnLogout]} onPress={()=> this.BackHandler()}>
+                    <Text style={styleComum.btnText}>Sair</Text>
+                </TouchableOpacity>
+
             </View>
         )
     }
 }
 
 const style = StyleSheet.create({
-
+    content: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+        width: '80%'
+    },
+    textStatus: {
+        fontWeight: 'bold',
+        textAlign: 'center',
+        fontSize: Dimensions.get('window').width / 20,
+        color: '#DDC300'
+    },
+    btnLogout: {
+        marginTop: 40,
+        backgroundColor: '#ec2028'
+    }
 })
 
 const mapStateToProps = ({ user }) => ({

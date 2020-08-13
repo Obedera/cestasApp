@@ -3,6 +3,11 @@ import cestaImg from '../../assets/img/cesta.png'
 import { View, Text, StyleSheet, Dimensions, Image } from 'react-native'
 
 class Header extends Component {
+    constructor(props) {
+        super(props);
+        
+    }
+    
 
     render() {
         return (
@@ -10,7 +15,7 @@ class Header extends Component {
                 <View style={style.header}>
                 </View>
                 <Image style={style.imgCesta} source={cestaImg} />
-                <Text style={style.title}>Cestas básicas</Text>
+                <Text style={style.title}>{this.props.title || 'Cestas básicas'}</Text>
             </View>
         )
     }

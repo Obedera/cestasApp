@@ -9,7 +9,7 @@ import App from './src/index';
 import { name as appName } from './app.json';
 import storeConfig from './src/store/storeConfig'
 
-axios.defaults.baseURL = 'http://'
+axios.defaults.baseURL = 'http://prd-api-vistoria.sa-east-1.elasticbeanstalk.com/'
 const store = storeConfig()
 
 const Redux = () => {

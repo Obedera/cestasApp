@@ -76,7 +76,6 @@ export class Login extends Component {
                         <TouchableOpacity style={[styleComum.btn, style.btnCadastrar]} onPress={() => this.props.navigation.navigate('Cadastrar')} >
                             <Text style={styleComum.btnText}>Cadastre-se</Text>
                         </TouchableOpacity>
-
                     </View>
                 </ScrollView>
             </SafeAreaView>

@@ -3,7 +3,7 @@ export default StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#ededed'
+        backgroundColor: '#fff'
     },
     title: {
         fontWeight: 'bold',

@@ -22,7 +22,6 @@ export class Home extends Component {
     }
 }
 
-console.warn(Dimensions.get('window').width)
 const style = StyleSheet.create({
     textoDescricao:{
       paddingBottom: 40,
